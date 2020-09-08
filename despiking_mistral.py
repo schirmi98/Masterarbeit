@@ -41,7 +41,7 @@ day_arr=np.arange(day_min,day_max+1,1)
 day=list((day_arr))    
 # day=['18','19','20','21','22','23','24','25','26','27','28','29','30','31']#['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17',
 month=['%02d' %(month)]#['01']#['01','02','03']
-station=list(str(sys.argv[4]))#['bug']
+station=str(sys.argv[4])#['bug']
 station1=str(sys.argv[5])#'BUG'
 
 varpath='/mnt/lustre02/work/um0203/u301025/Variablen'
