@@ -5,9 +5,9 @@ Created on Tue Aug 11 10:39:05 2020
 @author: imkes
 """
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import pandas as pd
-import math
+# import math
 import os, re
 import sys
 
@@ -43,9 +43,9 @@ day=list((day_arr))
 month=['%02d' %(month)]#['01']#['01','02','03']
 station=str(sys.argv[4])#['bug']
 station1=str(sys.argv[5])#'BUG'
-
+s=station
 varpath='/mnt/lustre02/work/um0203/u301025/Variablen'
-cd = '/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/'+station+'/test1'
+cd = '/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/'+s+'/test1'
 for m in month:
     for d in day:
         i = 0
