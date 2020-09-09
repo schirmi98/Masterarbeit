@@ -45,14 +45,14 @@ station=str(sys.argv[4])#['bug']
 station1=str(sys.argv[5])#'BUG'
 s=station
 varpath='/mnt/lustre02/work/um0203/u301025/Variablen'
-cd = '/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/'+s+'/test1'
+cd = '/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/'+s+'/Level0b_RawData20HzDaily/'
 for m in month:
     for d in day:
         i = 0
         dfList = []
         for root, dirs, files in os.walk(cd,topdown=True):
             for fname in files:
-                if re.match("2020"+m+str(d)+"-U"+station1, fname):
+                if re.match("2020"+m+str(d)+"-U"+station1+'.txt', fname):
                     frame = pd.read_csv(os.path.join(root, fname), delimiter=";", decimal='.')
                     frame['key'] = "file{}".format(i)
                     dfList.append(frame)    
