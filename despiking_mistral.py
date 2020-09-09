@@ -59,9 +59,12 @@ for m in month:
         for root, dirs, files in os.walk(cd,topdown=True):
             for fname in files:
                 if re.match("2020"+m+str(d)+"-U"+station1+'.txt', fname):
+                    print("2020"+m+str(d)+"-U"+station1+'.txt')
                     frame = pd.read_csv(os.path.join(root, fname), delimiter=";", decimal='.')
+                    print(frame)
                     frame['key'] = "file{}".format(i)
-                    dfList.append(frame)    
+                    dfList.append(frame)   
+                    print(dfList)
                     i += 1
                     print(root)
                     data= pd.concat(dfList,ignore_index=True)
