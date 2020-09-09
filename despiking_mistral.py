@@ -69,6 +69,7 @@ for m in month:
                     print(root)
                     data= pd.concat(dfList,ignore_index=True)
                     print(data)
+                    print(data['DATE'])
                     print(data['X'])
         
         despike_X=despike(pd.DataFrame(data['X']),'X',12.,-20.,20.)#3.5
