@@ -47,7 +47,7 @@ for m in month:
         cog.set_index(['date'],drop=True,append=False,inplace=True)
         cog=cog.resample('0.05S').asfreq()
         loffset = '1S'
-        cog1=cog.resample('0.05S').asfreq()
+        cog1=cog
         cog1.index = cog1.index + to_offset(loffset)
         cog=cog.append(cog1[1727961:-1])
         cog=cog.reset_index()
