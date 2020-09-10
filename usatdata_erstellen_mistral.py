@@ -45,7 +45,7 @@ for m in month:
         # cog['date']=cog['date time'][:].astype('datetime64[ns]')
         cog['date']=pd.to_datetime(cog['date time'])
         cog.set_index(['date'],drop=True,append=False,inplace=True)
-        cog=cog.resample('0.05S').asfreq()
+        cog=cog.resample('50L').asfreq()
         loffset = '1S'
         cog1=cog
         cog1.index = cog1.index + to_offset(loffset)
