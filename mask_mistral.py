@@ -68,7 +68,7 @@ cd='/mnt/lustre02/work/um0203/u301025/Eureka/Daten/Dship/meteorolog_daten/'
 
 for m in month:
     for d in day:
-        j=day.index(d)*(month.index(m)+1)
+        j=day.index(str(d))*(month.index(m)+1)
         mask=np.ones(24*60*60*20)
         mask_bug_clean = maske(hour_begin_bug_clean[j], minutes_begin_bug_clean[j],hour_end_bug_clean[j], minutes_end_bug_clean[j])
         mask_top_clean = maske(hour_begin_top_clean[j], minutes_begin_top_clean[j],hour_end_top_clean[j], minutes_end_top_clean[j])
@@ -137,7 +137,7 @@ for m in month:
                     
 #                     mask_best=[[]]
                     
-                    despiking_bug=pd.read_csv(varpath+'despiking_{day}{month}_bug.csv'.format(day=d,month=m))
+                    despiking_bug=pd.read_csv(varpath+'despiking_{day}{month}_bug.csv'.format(day=str(d),month=m))
                     despiking_bug=despiking_bug.drop(['Unnamed: 0','X', 'Y', 'Z', 'T', 'CC','CH','V','D','AX','AY','AZ'],axis=1)
                     despiking_top=pd.read_csv(varpath+'despiking_{day}{month}_top.csv'.format(day=str(d),month=m))
                     despiking_top=despiking_top.drop(['Unnamed: 0','X', 'Y', 'Z', 'T', 'CC','CH','V','D','AX','AY','AZ'],axis=1)

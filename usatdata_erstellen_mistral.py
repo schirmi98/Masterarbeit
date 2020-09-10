@@ -36,9 +36,9 @@ for m in month:
 #        dann: seapathfile=10hz
 #        trotzdem:
 #        seapathdata=seapathdata.resample('0.05S').asfreq()...
-        seapathfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+d+'_DSHIP_all_1Hz.dat'
+        seapathfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+str(d)+'_DSHIP_all_1Hz.dat'
         seapathdata=pd.read_csv(seapathfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
-        cogfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+d+'cog_1Hz.dat'
+        cogfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+str(d)+'cog_1Hz.dat'
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         cog['X']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.sin((cog['SYS.STR.Course'])/180. * math.pi)
         cog['Y']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.cos((cog['SYS.STR.Course'])/180. * math.pi)
@@ -90,7 +90,7 @@ for m in month:
 #                    print(root)
 #                    usatdata= pd.concat(dfList,ignore_index=True)
                     #despiking und maske: anstelle von gesamten daten einlesen nur flag einlesen und dort die columns mit daten rausziehen        
-        flag=pd.read_csv(varpath+'despiking_{day}{month}_{station}.csv'.format(day=d,month=m,station=station))
+        flag=pd.read_csv(varpath+'despiking_{day}{month}_{station}.csv'.format(day=str(d),month=m,station=station))
         usatdata=flag
         usatdata=usatdata.drop(['Unnamed: 0','X_mask', 'Y_mask', 'Z_mask', 'T_mask', 'CC_mask','CH_mask','V_mask','D_mask','AX_mask','AY_mask','AZ_mask'],axis=1)
         usatdata['Xrel']=usatdata['X']
@@ -154,14 +154,14 @@ for m in month:
         usatdata['ZH2O']=usatdata['Z']*usatdata['rhoh2o']
         usatdata['ZCO2']=usatdata['Z']*usatdata['rhoco2']
         usatdata['ZT']=usatdata['Z']*(usatdata['T']+273.15)
-        usatdata.to_csv(varpath+station+'usatdata_{day}{month}.csv'.format(day=d,month=m))
+        usatdata.to_csv(varpath+station+'usatdata_{day}{month}.csv'.format(day=str(d),month=m))
         
         #mean über 30 min
         meanval=usatdata.groupby(np.arange(len(usatdata.index))//(20*1800)).mean()
         meanval.D=(np.arctan2(-meanval.EU,-meanval.EV)+np.pi)*180/np.pi
         meanvalnew=pd.DataFrame(np.repeat(meanval.values,(20*1800),axis=0))
         meanvalnew.columns = meanval.columns
-        meanval.to_csv(varpath+station+'meanval_{day}{month}.csv'.format(day=d,month=m))
+        meanval.to_csv(varpath+station+'meanval_{day}{month}.csv'.format(day=str(d),month=m))
         
         abw=usatdata-meanvalnew
-        abw.to_csv(varpath+station+'abw_{day}{month}.csv'.format(day=d,month=m))
+        abw.to_csv(varpath+station+'abw_{day}{month}.csv'.format(day=str(d),month=m))
