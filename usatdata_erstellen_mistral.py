@@ -36,9 +36,9 @@ for m in month:
 #        dann: seapathfile=10hz
 #        trotzdem:
 #        seapathdata=seapathdata.resample('0.05S').asfreq()...
-        seapathfile='../../Eureka/Daten/Dship/seapath/2020'+m+d+'_DSHIP_all_1Hz.dat'
+        seapathfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+d+'_DSHIP_all_1Hz.dat'
         seapathdata=pd.read_csv(seapathfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
-        cogfile='../../Eureka/Daten/Dship/seapath/2020'+m+d+'cog_1Hz.dat'
+        cogfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+d+'cog_1Hz.dat'
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         cog['X']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.sin((cog['SYS.STR.Course'])/180. * math.pi)
         cog['Y']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.cos((cog['SYS.STR.Course'])/180. * math.pi)
