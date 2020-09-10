@@ -47,7 +47,7 @@ station=str(sys.argv[4])#['bug']
 station1=str(sys.argv[5])#'BUG'
 s=station
 
-varpath='/mnt/lustre02/work/um0203/u301025/Variablen'
+varpath='/mnt/lustre02/work/um0203/u301025/Variablen/'
 cd = '/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/'+s+'/Level0b_RawData20HzDaily/'
 print(day_arr,day,month,station1,s,cd)
 for m in month:
