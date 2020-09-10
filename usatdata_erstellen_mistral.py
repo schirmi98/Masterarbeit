@@ -42,7 +42,8 @@ for m in month:
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         cog['X']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.sin((cog['SYS.STR.Course'])/180. * math.pi)
         cog['Y']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.cos((cog['SYS.STR.Course'])/180. * math.pi)
-        cog['date']=cog['date time'][:].astype('datetime64[ns]')
+        # cog['date']=cog['date time'][:].astype('datetime64[ns]')
+        cog['date']=pd.to_datetime(cog['date time'])
         cog.set_index(['date'],drop=True,append=False,inplace=True)
         cog=cog.resample('0.05S').asfreq()
         loffset = '1S'
