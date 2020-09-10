@@ -51,14 +51,14 @@ for m in month:
         cog1.index = cog1.index + to_offset(loffset)
         cog=cog.append(cog1[1727961:-1])
         cog=cog.reset_index()
-        cog.loc[1727981:]['X']=cog.loc[1727980]['X']
-        cog.loc[1727981:]['Y']=cog.loc[1727980]['Y']
+        cog.loc[1727981:,'X']=cog.loc[1727980,'X']
+        cog.loc[1727981:,'Y']=cog.loc[1727980,'Y']
         cog['X']=cog['X'].interpolate(method='slinear')
         cog['Y']=cog['Y'].interpolate(method='slinear')
         cog['SYS.STR.Course_test']=(180/np.pi)*np.arctan2(cog['X'], cog['Y'])
         cog_test=np.zeros((len(cog['SYS.STR.Course_test'])))
         for i in range(0,len(cog['SYS.STR.Course_test'])):
-            print(i)
+            #print(i)
             if cog.loc[i]['SYS.STR.Course_test'] < 0.:
                cog_test[i]=cog.loc[i]['SYS.STR.Course_test']+360.
             else:
