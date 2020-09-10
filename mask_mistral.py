@@ -110,8 +110,8 @@ for m in month:
 #                    mask_stop3[mask_stop3==0.]=np.nan
                     flag['mask_stop']=mask_stop
                     
-                    usatdata_top=pd.read_csv('topusatdata_'+str(d)+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
-                    usatdata_bug=pd.read_csv('bugusatdata_'+str(d)+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
+                    usatdata_top=pd.read_csv(varpath+'topusatdata_'+str(d)+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
+                    usatdata_bug=pd.read_csv(varpath+'bugusatdata_'+str(d)+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
                     mask_bug_winddir=(usatdata_bug['D'] > 130.) & (usatdata_bug['D'] <250.)
 #                    mask_stop2=np.repeat(mask_stop[0], 60*20)
 #                    mask_stop2.reset_index(drop=True, inplace=True)
