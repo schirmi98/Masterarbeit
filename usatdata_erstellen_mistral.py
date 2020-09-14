@@ -56,19 +56,20 @@ for m in month:
         cog['X']=cog['X'].interpolate(method='slinear')
         cog['Y']=cog['Y'].interpolate(method='slinear')
         cog['SYS.STR.Course_test']=(180/np.pi)*np.arctan2(cog['X'], cog['Y'])
-        cog_test=np.zeros((len(cog['SYS.STR.Course_test'])))
-        for i in range(0,len(cog['SYS.STR.Course_test'])):
-            #print(i)
-            if cog.loc[i]['SYS.STR.Course_test'] < 0.:
-               cog_test[i]=cog.loc[i]['SYS.STR.Course_test']+360.
-            else:
-               cog_test[i]=cog.loc[i]['SYS.STR.Course_test']  
-        cog_test=pd.DataFrame(cog_test)        
+        # cog_test=np.zeros((len(cog['SYS.STR.Course_test'])))
+        # for i in range(0,len(cog['SYS.STR.Course_test'])):
+        #     #print(i)
+        #     if cog.loc[i]['SYS.STR.Course_test'] < 0.:
+        #        cog_test[i]=cog.loc[i]['SYS.STR.Course_test']+360.
+        #     else:
+        #        cog_test[i]=cog.loc[i]['SYS.STR.Course_test']  
+        # cog_test=pd.DataFrame(cog_test)   
+        cog.loc[np.where(cog['SYS.STR.Course_test'] < 0.)]['SYS.STR.Course_test']=cog.loc[np.where(cog['SYS.STR.Course_test'] < 0.)]['SYS.STR.Course_test']+360.
         #auf 10 hz bringen
         seapathdata['date']=seapathdata['date time'][:].astype('datetime64[ns]')
         seapathdata.set_index(['date'],drop=True,append=False,inplace=True)
-        seapathdata=seapathdata.resample('0.05S').asfreq()
-        seapathdata1=seapathdata.resample('0.05S').asfreq()
+        seapathdata=seapathdata.resample('50L').asfreq()
+        seapathdata1=seapathdata.resample('50L').asfreq()
         seapathdata1.index = seapathdata1.index + to_offset(loffset)
         seapathdata=seapathdata.append(seapathdata1[1727961:])
         seapathdata=seapathdata.reset_index()
@@ -91,8 +92,8 @@ for m in month:
 #                    print(root)
 #                    usatdata= pd.concat(dfList,ignore_index=True)
                     #despiking und maske: anstelle von gesamten daten einlesen nur flag einlesen und dort die columns mit daten rausziehen        
-        flag=pd.read_csv(varpath+'despiking_{day}{month}_{station}.csv'.format(day=str(d),month=m,station=station))
-        usatdata=flag
+        usatdata=pd.read_csv(varpath+'despiking_{day}{month}_{station}.csv'.format(day=str(d),month=m,station=station))
+        # usatdata=flag
         usatdata=usatdata.drop(['Unnamed: 0','X_mask', 'Y_mask', 'Z_mask', 'T_mask', 'CC_mask','CH_mask','V_mask','D_mask','AX_mask','AY_mask','AZ_mask'],axis=1)
         usatdata['Xrel']=usatdata['X']
         usatdata['Yrel']=usatdata['Y']
@@ -116,7 +117,7 @@ for m in month:
         ber_wind=rw.wind(seapathdata['SYS.CALC.SPEED_kmh']/3.6,
                          usatdata['V'],
                          usatdata['D_metsystem'],
-                         seapathdata['SEAPATH.PSXN.Heading'], cog_test[0])
+                         seapathdata['SEAPATH.PSXN.Heading'], cog['SYS.STR.Course_test'])
         
         #wie ist der unterschied der Messungen der Meteor und unserer Messungen?
 
