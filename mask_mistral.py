@@ -58,17 +58,18 @@ day_min, day_max = int(sys.argv[1]), int(sys.argv[2])
 print(day_min,day_max)
 month= int(sys.argv[3])
 day_arr=np.arange(day_min,day_max+1,1)
-day=list((day_arr))    
+day=list((day_arr))   
+day=['%02d'%elem for elem in day] 
 month=['%02d' %(month)]#['01']#['01','02','03']
+x=int(sys.argv[4])#ist null wenns bei 14.01 beginnt., sonst jeden tag später entspricht plus 1
 
 varpath='/mnt/lustre02/work/um0203/u301025/Variablen/'
 
-x=int(sys.argv[4])#ist null wenns bei 18.01 beginnt., sonst jeden tag später entspricht plus 1
 cd='/mnt/lustre02/work/um0203/u301025/Eureka/Daten/Dship/meteorolog_daten/'
 
 for m in month:
     for d in day:
-        j=day.index(str(d))*(month.index(m)+1)
+        j=day.index(d)*(month.index(m)+1)
         mask=np.ones(24*60*60*20)
         mask_bug_clean = maske(hour_begin_bug_clean[j], minutes_begin_bug_clean[j],hour_end_bug_clean[j], minutes_end_bug_clean[j])
         mask_top_clean = maske(hour_begin_top_clean[j], minutes_begin_top_clean[j],hour_end_top_clean[j], minutes_end_top_clean[j])
@@ -82,14 +83,14 @@ for m in month:
         flag=pd.DataFrame(data={'mask_bug_clean': mask_bug_clean,'mask_top_clean': mask_top_clean,'mask_chimney': mask_chimney, 'mask_rain': mask_rain} )
         # flag.to_csv(varpath+'mask_{day}{month}.csv'.format(day=d,month=m))
         
-# flag=pd.read_csv('mask_{day}{month}.csv'.format(day=str(d),month=m))
+# flag=pd.read_csv('mask_{day}{month}.csv'.format(day=d,month=m))
 #for m in month:
 #    for d in day:        
         i = 0
         dfList = []
         for root, dirs, files in os.walk(cd,topdown=True):
             for fname in files:
-                if re.match("dship_"+str(d)+'_'+m, fname):
+                if re.match("dship_"+d+'_'+m, fname):
                     frame = pd.read_csv(os.path.join(root, fname), delimiter=";", decimal='.', skiprows=[1,2])
                     frame['key'] = "file{}".format(i)
                     dfList.append(frame)    
@@ -110,8 +111,8 @@ for m in month:
 #                    mask_stop3[mask_stop3==0.]=np.nan
                     flag['mask_stop']=mask_stop
                     
-                    usatdata_top=pd.read_csv(varpath+'topusatdata_'+str(d)+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
-                    usatdata_bug=pd.read_csv(varpath+'bugusatdata_'+str(d)+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
+                    usatdata_top=pd.read_csv(varpath+'topusatdata_'+d+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
+                    usatdata_bug=pd.read_csv(varpath+'bugusatdata_'+d+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
                     mask_bug_winddir=(usatdata_bug['D'] > 130.) & (usatdata_bug['D'] <250.)
 #                    mask_stop2=np.repeat(mask_stop[0], 60*20)
 #                    mask_stop2.reset_index(drop=True, inplace=True)
@@ -137,9 +138,9 @@ for m in month:
                     
 #                     mask_best=[[]]
                     
-                    despiking_bug=pd.read_csv(varpath+'despiking_{day}{month}_bug.csv'.format(day=str(d),month=m))
+                    despiking_bug=pd.read_csv(varpath+'despiking_{day}{month}_bug.csv'.format(day=d,month=m))
                     despiking_bug=despiking_bug.drop(['Unnamed: 0','X', 'Y', 'Z', 'T', 'CC','CH','V','D','AX','AY','AZ'],axis=1)
-                    despiking_top=pd.read_csv(varpath+'despiking_{day}{month}_top.csv'.format(day=str(d),month=m))
+                    despiking_top=pd.read_csv(varpath+'despiking_{day}{month}_top.csv'.format(day=d,month=m))
                     despiking_top=despiking_top.drop(['Unnamed: 0','X', 'Y', 'Z', 'T', 'CC','CH','V','D','AX','AY','AZ'],axis=1)
                     despiking_top=despiking_top.rename(columns={'X_mask':'X_mask_top', 'Y_mask': 'Y_mask_top', 'Z_mask':'Z_mask_top', 'T_mask':'T_mask_top', 'CC_mask':'CC_mask_top','CH_mask':'CH_mask_top','V_mask':'V_mask_top','D_mask':'D_mask_top','AX_mask':'AX_mask_top','AY_mask':'AY_mask_top','AZ_mask':'AZ_mask_top'})
                     despiking_bug.rename(columns={'X_mask':'X_mask_bug', 'Y_mask': 'Y_mask_bug', 'Z_mask':'Z_mask_bug', 'T_mask':'T_mask_bug', 'CC_mask':'CC_mask_bug','CH_mask':'CH_mask_bug','V_mask':'V_mask_bug','D_mask':'D_mask_bug','AX_mask':'AX_mask_bug','AY_mask':'AY_mask_bug','AZ_mask':'AZ_mask_bug'})
@@ -147,4 +148,4 @@ for m in month:
                     flag=flag.append(despiking_bug)
 
 
-                    flag.to_csv(varpath+'mask_{day}{month}.csv'.format(day=str(d),month=m))
+                    flag.to_csv(varpath+'mask_{day}{month}.csv'.format(day=d,month=m))

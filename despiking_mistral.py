@@ -40,8 +40,8 @@ print(day_min,day_max)
 month= int(sys.argv[3])
 # print(month)
 day_arr=np.arange(day_min,day_max+1,1)
-day=list((day_arr))    
-# day=['18','19','20','21','22','23','24','25','26','27','28','29','30','31']#['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17',
+day=list((day_arr))  
+day=['%02d'%elem for elem in day]  
 month=['%02d' %(month)]#['01']#['01','02','03']
 station=str(sys.argv[4])#['bug']
 station1=str(sys.argv[5])#'BUG'
@@ -58,8 +58,8 @@ for m in month:
         dfList = []
         for root, dirs, files in os.walk(cd,topdown=True):
             for fname in files:
-                if re.match("2020"+m+str(d)+"-U"+station1+'.txt', fname):
-                    # print("2020"+m+str(d)+"-U"+station1+'.txt')
+                if re.match("2020"+m+d+"-U"+station1+'.txt', fname):
+                    # print("2020"+m+d+"-U"+station1+'.txt')
                     frame = pd.read_csv(os.path.join(root, fname), delimiter=";", decimal='.')
                     # print(frame)
                     frame['key'] = "file{}".format(i)
@@ -151,7 +151,7 @@ for m in month:
         v1=despike_AZ[1]['AZ']
           
         flag=pd.DataFrame(data={'X':  a1,'X_mask': b1,'Y':c1 ,'Y_mask': d1,'Z': e1,'Z_mask': f1,'T': g1,'T_mask': h1,'CC': i1,'CC_mask': j1,'CH': k1,'CH_mask': l1, 'V':  m1,'V_mask': n1,'D':  o1,'D_mask': p1,'AX':q1 ,'AX_mask': r1,'AY':s1 ,'AY_mask': t1,'AZ':u1 ,'AZ_mask': v1,} ) #np.array(despike_X[0].index
-        flag.to_csv(varpath+'despiking_{day}{month}_{station}.csv'.format(day=str(d),month=m,station=s))        
+        flag.to_csv(varpath+'despiking_{day}{month}_{station}.csv'.format(day=d,month=m,station=s))        
         # #%%        #plots zur veranschaulichung
         # #            flag=pd.read_csv('despiking_{day}{month}_{station}.csv'.format(day=d,month=m,station=station))
         #             plt.figure(1)
