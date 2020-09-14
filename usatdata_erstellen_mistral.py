@@ -40,8 +40,8 @@ for m in month:
         seapathdata=pd.read_csv(seapathfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         cogfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+str(d)+'cog_1Hz.dat'
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
-        cog['X']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.sin((cog['SYS.STR.Course'])/180. * math.pi)
-        cog['Y']=seapathdata['SYS.CALC.SPEED_kmh']/3.6*np.cos((cog['SYS.STR.Course'])/180. * math.pi)
+        cog['X']=(seapathdata['SYS.CALC.SPEED_kmh']/3.6)*np.sin((cog['SYS.STR.Course'])/180. * math.pi)
+        cog['Y']=(seapathdata['SYS.CALC.SPEED_kmh']/3.6)*np.cos((cog['SYS.STR.Course'])/180. * math.pi)
         # cog['date']=cog['date time'][:].astype('datetime64[ns]')
         cog['date']=pd.to_datetime(cog['date time'])
         cog.set_index(['date'],drop=True,append=False,inplace=True)
@@ -55,7 +55,7 @@ for m in month:
         cog.loc[1727981:,'Y']=cog.loc[1727980,'Y']
         cog['X']=cog['X'].interpolate(method='slinear')
         cog['Y']=cog['Y'].interpolate(method='slinear')
-        cog['SYS.STR.Course_test']=(180/np.pi)*np.arctan2(cog['X'], cog['Y'])
+        cog['SYS.STR.Course_test']=(180./np.pi)*np.arctan2(cog['X'], cog['Y'])
         # cog_test=np.zeros((len(cog['SYS.STR.Course_test'])))
         # for i in range(0,len(cog['SYS.STR.Course_test'])):
         #     #print(i)
@@ -105,9 +105,9 @@ for m in month:
         #                 seapathdata['SEAPATH.PSXN.Heading'], cog_test[0])
         #                ##
         unterschied=usatdata.D-seapathdata['WEATHER.PBWWI.RealWindDir']
-        test_1=unterschied.where(usatdata.D > 170)
-        test_1=test_1.where(usatdata.D  <190)
-        mittel_obere=np.mean(test_1.where(test_1 >100))
+        test_1=unterschied.where(usatdata.D > 170.)
+        test_1=test_1.where(usatdata.D  <190.)
+        mittel_obere=np.mean(test_1.where(test_1 >100.))
         versuch=usatdata.D-mittel_obere
         for i in range(0,len(versuch)):
             if versuch[i] <0.:
@@ -160,7 +160,7 @@ for m in month:
         
         #mean über 30 min
         meanval=usatdata.groupby(np.arange(len(usatdata.index))//(20*1800)).mean()
-        meanval.D=(np.arctan2(-meanval.EU,-meanval.EV)+np.pi)*180/np.pi
+        meanval.D=(np.arctan2(-meanval.EU,-meanval.EV)+np.pi)*180./np.pi
         meanvalnew=pd.DataFrame(np.repeat(meanval.values,(20*1800),axis=0))
         meanvalnew.columns = meanval.columns
         meanval.to_csv(varpath+station+'meanval_{day}{month}.csv'.format(day=str(d),month=m))
