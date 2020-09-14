@@ -41,7 +41,7 @@ for m in month:
         cogfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+str(d)+'cog_1Hz.dat'
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         print(seapathdata['SYS.CALC.SPEED_kmh'].dtype, cog['SYS.STR.Course'].dtype)
-        print(cog['SYS.STR.Course'][:])
+        # print(cog['SYS.STR.Course'][:])
         cog['X']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.sin(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
         cog['Y']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.cos(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
         # cog['date']=cog['date time'][:].astype('datetime64[ns]')
@@ -55,8 +55,8 @@ for m in month:
         cog=cog.reset_index()
         cog.loc[1727981:,'X']=cog.loc[1727980,'X']
         cog.loc[1727981:,'Y']=cog.loc[1727980,'Y']
-        cog['X']=cog['X'].interpolate(method='slinear')
-        cog['Y']=cog['Y'].interpolate(method='slinear')
+        cog['X']=cog['X'].interpolate(method='linear')
+        cog['Y']=cog['Y'].interpolate(method='linear')
         cog['SYS.STR.Course_test']=(180./np.pi)*np.arctan2(cog['X'], cog['Y'])
         # cog_test=np.zeros((len(cog['SYS.STR.Course_test'])))
         # for i in range(0,len(cog['SYS.STR.Course_test'])):
@@ -68,7 +68,7 @@ for m in month:
         # cog_test=pd.DataFrame(cog_test)   
         cog.loc[np.where(cog['SYS.STR.Course_test'] < 0.)]['SYS.STR.Course_test']=cog.loc[np.where(cog['SYS.STR.Course_test'] < 0.)]['SYS.STR.Course_test']+360.
         #auf 10 hz bringen
-        print(seapathdata['date time'][:])
+        # print(seapathdata['date time'][:])
         seapathdata['date']=pd.to_datetime(seapathdata['date time'])
         seapathdata.set_index(['date'],drop=True,append=False,inplace=True)
         seapathdata=seapathdata.resample('50L').asfreq()
@@ -76,7 +76,7 @@ for m in month:
         seapathdata1.index = seapathdata1.index + to_offset(loffset)
         seapathdata=seapathdata.append(seapathdata1[1727961:])
         seapathdata=seapathdata.reset_index()
-        seapathdata=seapathdata.interpolate(method='slinear')
+        seapathdata=seapathdata.interpolate(method='linear')
         seapathdata=seapathdata.drop(seapathdata.index[len(seapathdata)-1]) 
 #        for i in range(2,len(seapathdata.loc[0][:])):
 #            seapathdata.loc[1727981:][i]=seapathdata.loc[1727980][i]
