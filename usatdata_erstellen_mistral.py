@@ -69,10 +69,10 @@ for m in month:
         cog.loc[np.where(cog['SYS.STR.Course_test'] < 0.)]['SYS.STR.Course_test']=cog.loc[np.where(cog['SYS.STR.Course_test'] < 0.)]['SYS.STR.Course_test']+360.
         #auf 10 hz bringen
         print(seapathdata['date time'][:])
-        seapathdata['date']=pd.to_datetime(seapathdata['date time'][:])
+        seapathdata['date']=pd.to_datetime(seapathdata['date time'])
         seapathdata.set_index(['date'],drop=True,append=False,inplace=True)
         seapathdata=seapathdata.resample('50L').asfreq()
-        seapathdata1=seapathdata.resample('50L').asfreq()
+        seapathdata1=seapathdata
         seapathdata1.index = seapathdata1.index + to_offset(loffset)
         seapathdata=seapathdata.append(seapathdata1[1727961:])
         seapathdata=seapathdata.reset_index()
