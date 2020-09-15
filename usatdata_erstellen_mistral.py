@@ -38,13 +38,17 @@ for m in month:
 #        seapathdata=seapathdata.resample('0.05S').asfreq()...
         seapathfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+d+'_DSHIP_all_1Hz.dat'
         seapathdata=pd.read_csv(seapathfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
+        seapathdata.iloc[:,:]=seapathdata.mask(seapathdata.iloc[:,:]==str(-999))
+        seapathdata.iloc[:,:]=seapathdata.mask(seapathdata.iloc[:,:]==str(-999-999-999.-999-999))
+        seapathdata.iloc[:,:]=seapathdata.mask(seapathdata.iloc[:,:]==str(-999.-999-999))
+        seapathdata.iloc[:,:]=seapathdata.mask(seapathdata.iloc[:,:]==str(-999-999.-999-999))
+        seapathdata.iloc[:,:]=seapathdata.mask(seapathdata.iloc[:,:]==str(-999-999.-999))
+        seapathdata.iloc[:,:]=seapathdata.mask(seapathdata.iloc[:,:]==str(-999-999-999-999.-999))
         cogfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+d+'cog_1Hz.dat'
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         print(seapathdata['SYS.CALC.SPEED_kmh'].dtype, cog['SYS.STR.Course'].dtype)
         if cog['SYS.STR.Course'].dtype != 'float64':
-            test=np.where(cog['SYS.STR.Course'][:]==' ')
-            cog.iloc[test[0][:],1]= np.nan
-        # print(cog['SYS.STR.Course'][:])
+            cog['SYS.STR.Course']=cog.mask(cog['SYS.STR.Course']==' ')
         cog['X']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.sin(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
         cog['Y']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.cos(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
         # cog['date']=cog['date time'][:].astype('datetime64[ns]')
@@ -110,7 +114,7 @@ for m in month:
         #                 seapathdata['WEATHER.PBWWI.RealWindDir'],
         #                 seapathdata['SEAPATH.PSXN.Heading'], cog_test[0])
         #                ##
-        unterschied=usatdata.D-seapathdata['WEATHER.PBWWI.RealWindDir']
+        unterschied=usatdata.D-seapathdata['WEATHER.PBWWI.RealWindDir'].astype(float)
         test_1=unterschied.where(usatdata.D > 170.)
         test_1=test_1.where(usatdata.D  <190.)
         mittel_obere=np.mean(test_1.where(test_1 >100.))
