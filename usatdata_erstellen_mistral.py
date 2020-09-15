@@ -40,9 +40,10 @@ for m in month:
         seapathdata=pd.read_csv(seapathfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         cogfile='/mnt/lustre02/work/um0203/u301025/Masterarbeit/Eureka/Daten/Dship/seapath/2020'+m+d+'cog_1Hz.dat'
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
-        test=np.where(cog['SYS.STR.Course'][:]==' ')
-        cog.iloc[test[0][:],1]= np.nan
         print(seapathdata['SYS.CALC.SPEED_kmh'].dtype, cog['SYS.STR.Course'].dtype)
+        if cog['SYS.STR.Course'].dtype != 'float64':
+            test=np.where(cog['SYS.STR.Course'][:]==' ')
+            cog.iloc[test[0][:],1]= np.nan
         # print(cog['SYS.STR.Course'][:])
         cog['X']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.sin(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
         cog['Y']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.cos(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
