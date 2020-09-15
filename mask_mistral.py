@@ -113,14 +113,14 @@ for m in month:
                     
                     usatdata_top=pd.read_csv(varpath+'topusatdata_'+d+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
                     usatdata_bug=pd.read_csv(varpath+'bugusatdata_'+d+m+'.csv', delimiter=",", decimal='.',usecols =['D'])
-                    mask_bug_winddir=(usatdata_bug['D'] > 130.) & (usatdata_bug['D'] <250.)
+                    mask_bug_winddir=(usatdata_bug['D'] > 310.) & (usatdata_bug['D'] <=360.) or (usatdata_bug['D'] >= 0.) & (usatdata_bug['D'] <70.)#(usatdata_bug['D'] > 130.) & (usatdata_bug['D'] <250.)wenn man usatdata auf dwd umrechnen würde(180 grad verschoben)
 #                    mask_stop2=np.repeat(mask_stop[0], 60*20)
 #                    mask_stop2.reset_index(drop=True, inplace=True)
                     mask_bug_winddir.to_frame()
                     mask_bug_winddir=1.*mask_bug_winddir
                     mask_bug_winddir[mask_bug_winddir==0.]=np.nan
                     
-                    mask_top_winddir=(usatdata_top['D'] > 180.) & (usatdata_top['D'] <190.) or (usatdata_top['D'] > 110.) & (usatdata_top['D'] <150.) or (usatdata_top['D'] > 245.) & (usatdata_top['D'] <255.)
+                    mask_top_winddir=(usatdata_top['D'] > 65.) & (usatdata_top['D'] <75.) or (usatdata_top['D'] >= 0.) & (usatdata_top['D'] <10.) or (usatdata_top['D'] > 290.) & (usatdata_top['D'] <330.)
                     mask_top_winddir.to_frame()
                     mask_top_winddir=1.*mask_top_winddir
                     mask_top_winddir[mask_top_winddir==0.]=np.nan
