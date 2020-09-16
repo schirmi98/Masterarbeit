@@ -49,7 +49,7 @@ for m in month:
         cog=pd.read_csv(cogfile, delimiter='\t', decimal='.',skiprows=[1,2] ,engine='python')
         print(seapathdata['SYS.CALC.SPEED_kmh'].dtype, cog['SYS.STR.Course'].dtype)
         if cog['SYS.STR.Course'].dtype != 'float64':
-            cog['SYS.STR.Course']=cog.mask(cog['SYS.STR.Course']==' ')
+            cog=cog.mask(cog==' ')
         cog['X']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.sin(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
         cog['Y']=(seapathdata['SYS.CALC.SPEED_kmh'].astype(float)/3.6)*np.cos(cog['SYS.STR.Course'].astype(float)/180. * math.pi)
         # cog['date']=cog['date time'][:].astype('datetime64[ns]')
