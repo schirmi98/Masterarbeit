@@ -23,7 +23,7 @@ month= int(sys.argv[3])
 # print(month)
 day_arr=np.arange(day_min,day_max+1,1)
 day=list((day_arr))   
-day=['%02d'%elem for elem in day] 
+day=['%02d' %elem for elem in day] 
 month=['%02d' %(month)]#['01']#['01','02','03']
 station=str(sys.argv[4])#['bug']
 # station1=str(sys.argv[5])#'BUG'
@@ -36,7 +36,7 @@ fmom2=np.zeros((48,len(day),len(month)))
 fsen=np.zeros((48,len(day),len(month)))
 flat=np.zeros((48,len(day),len(month)))
 
-Fco2=np.zeros(48*len(day)*len(month))
+Fco2=np.zeros((48*len(day)*len(month)))
 Fh2o=np.zeros((48*len(day)*len(month)))
 Fmom=np.zeros((48*len(day)*len(month)))
 Fmom2=np.zeros((48*len(day)*len(month)))
